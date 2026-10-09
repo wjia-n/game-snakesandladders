@@ -753,11 +753,20 @@ class _NameField extends StatefulWidget {
 
 class _NameFieldState extends State<_NameField> {
   late final TextEditingController _c;
+  late final FocusNode _f;
 
   @override
   void initState() {
     super.initState();
     _c = TextEditingController(text: widget.initial);
+    _f = FocusNode(debugLabel: 'name${widget.index}');
+    _f.addListener(_onFocusChange);
+  }
+
+  /// Commit on focus loss: tapping another field or scrolling away must not
+  /// silently drop a rename (keyboard-done alone is not enough).
+  void _onFocusChange() {
+    if (!_f.hasFocus) widget.onDone(_c.text);
   }
 
   @override
@@ -770,6 +779,8 @@ class _NameFieldState extends State<_NameField> {
 
   @override
   void dispose() {
+    _f.removeListener(_onFocusChange);
+    _f.dispose();
     _c.dispose();
     super.dispose();
   }
@@ -786,6 +797,7 @@ class _NameFieldState extends State<_NameField> {
       ),
       child: TextField(
         controller: _c,
+        focusNode: _f,
         style: Story.body(15, t: widget.theme),
         maxLength: 16,
         decoration: InputDecoration(
@@ -796,6 +808,7 @@ class _NameFieldState extends State<_NameField> {
               t: widget.theme,
               color: widget.theme.inkSoft.withValues(alpha: 0.6)),
         ),
+        onChanged: widget.onDone, // save-on-keystroke: never lose a rename
         onSubmitted: widget.onDone,
         onEditingComplete: () => widget.onDone(_c.text),
       ),
