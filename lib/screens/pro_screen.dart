@@ -106,32 +106,7 @@ class _ProScreenState extends State<ProScreen> {
 
 // ---------------------------------------------------------------------------
 /// Free vs Pro comparison table — buyers see the big difference.
-class _Cell extends StatelessWidget {
-  final Object value; // bool | String
-  final StoryThemeDef theme;
-  const _Cell({required this.value, required this.theme});
 
-  @override
-  Widget build(BuildContext context) {
-    if (value is bool) {
-      final v = value as bool;
-      return Text(
-        v ? '✓' : '—',
-        style: Story.body(15,
-            t: theme,
-            color: v
-                ? theme.accentDark
-                : theme.inkSoft.withValues(alpha: 0.5)),
-        textAlign: TextAlign.center,
-      );
-    }
-    return Text(
-      value as String,
-      style: Story.label(12, t: theme),
-      textAlign: TextAlign.center,
-    );
-  }
-}
 
 // ---------------------------------------------------------------------------
 class _TipsCard extends StatelessWidget {
