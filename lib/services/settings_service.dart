@@ -71,7 +71,7 @@ class StorySettings extends ChangeNotifier {
   int gamesPlayed = 0;
   int biggestClimb = 0;
   int longestSlide = 0;
-  bool isPro = false;
+  bool isPro = true; // everything unlocked — no Pro version
 
   /// Seats (player indices) that are bots. At least one human always plays.
   List<int> botSeats = [1];
@@ -148,7 +148,7 @@ class StorySettings extends ChangeNotifier {
     gamesPlayed = p.getInt(_kGames) ?? 0;
     biggestClimb = p.getInt(_kClimb) ?? 0;
     longestSlide = p.getInt(_kSlide) ?? 0;
-    isPro = p.getBool(_kIsPro) ?? false;
+    isPro = true; // everything unlocked
     for (final k in _defaultCustomColors.keys) {
       customColors[k] = p.getInt('$_kCustomPrefix$k') ?? _defaultCustomColors[k]!;
     }
